@@ -1,0 +1,10 @@
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+main {
+    flex: 1;
+}
