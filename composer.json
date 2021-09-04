@@ -37,8 +37,12 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
+        "symfony/browser-kit": "5.3.*",
+        "symfony/css-selector": "5.3.*",
         "symfony/debug-bundle": "5.3.*",
+        "symfony/phpunit-bridge": "^5.3",
         "symfony/stopwatch": "5.3.*",
         "symfony/web-profiler-bundle": "5.3.*"
     },
