@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MaintenanceController extends AbstractController
 {
-    #[Route('/', name: 'maintenance')]
+    #[Route('/', name: 'homepage')]
     public function maintenance(string $instagramLink): Response
     {
         return $this->render('maintenance.html.twig', compact('instagramLink'));
