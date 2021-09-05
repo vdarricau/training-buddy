@@ -17,7 +17,7 @@ start: ## Starts the server, the docker containers, and the message consumer wor
 yarn-watch:
 	symfony run -d yarn encore dev --watch
 
-migrate-create:
+migration-create:
 	symfony console make:migration
 
 migrate:

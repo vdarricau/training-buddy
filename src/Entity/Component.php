@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ComponentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @ORM\Entity(repositoryClass=ComponentRepository::class)
@@ -20,7 +21,7 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -30,7 +31,7 @@ class Component
     /**
      * @ORM\Column(type="integer")
      */
-    private $orderNumber;
+    private $orderNumber = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workout::class, inversedBy="components")
@@ -39,29 +40,33 @@ class Component
     private $workout;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Exercise::class, inversedBy="components")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $exercise;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status;
+    private $status = 'pending';
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Variation::class)
+     */
+    private $variation;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $note;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): self
+    public function setTitle(string $title): self
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -102,18 +107,6 @@ class Component
         return $this;
     }
 
-    public function getExercise(): ?Exercise
-    {
-        return $this->exercise;
-    }
-
-    public function setExercise(?Exercise $exercise): self
-    {
-        $this->exercise = $exercise;
-
-        return $this;
-    }
-
     public function getStatus(): ?string
     {
         return $this->status;
@@ -124,5 +117,35 @@ class Component
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getVariation(): ?Variation
+    {
+        return $this->variation;
+    }
+
+    public function setVariation(?Variation $variation): self
+    {
+        $this->variation = $variation;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    #[Pure]
+    public function __toString(): string
+    {
+        return $this->getTitle() . ' - ' . $this->getVariation();
     }
 }

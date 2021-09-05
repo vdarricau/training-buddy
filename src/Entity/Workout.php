@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\WorkoutRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 
 /**
  * @ORM\Entity(repositoryClass=WorkoutRepository::class)
@@ -32,7 +34,7 @@ class Workout
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status;
+    private $status = 'pending';
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="workouts")
@@ -45,6 +47,11 @@ class Workout
      */
     private $components;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
+
     public function __construct()
     {
         $this->components = new ArrayCollection();
@@ -55,12 +62,12 @@ class Workout
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -131,5 +138,22 @@ class Workout
         }
 
         return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getTitle() . ' - '. $this->getDate()->format('Y-m-d h:m:i');
     }
 }
