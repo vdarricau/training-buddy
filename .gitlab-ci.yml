@@ -14,6 +14,7 @@ variables:
     POSTGRES_PASSWORD: main
     POSTGRES_DB: main
     DATABASE_URL: 'postgresql://main:main@postgres:5432/main'
+    APP_ENV: test
 
 static_analysis:
     stage: analysis
