@@ -10,11 +10,9 @@ export default class extends Controller {
 
     connect() {
         this.index = this.itemsCountValue = this.fieldTargets.length
-        console.log('coucou connect');
     }
 
     addItem(event) {
-        console.log('coucou');
         event.preventDefault()
         let prototype = JSON.parse(this.prototypeValue)
         const newField = prototype.replace(/__name__/g, this.index)
