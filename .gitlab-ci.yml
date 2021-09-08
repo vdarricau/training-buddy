@@ -30,6 +30,5 @@ phpunit:
         - sh scripts/php_test_run.sh
 
 stages:
-    - install
     - analysis
     - test
