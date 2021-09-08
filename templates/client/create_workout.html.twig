@@ -17,12 +17,10 @@
 
     {% import _self as formMacros %}
 
-
     <div data-controller="workout-form">
         {{ form_start(workout_form) }}
         {{ form_row(workout_form.title) }}
         {{ form_row(workout_form.date) }}
-
         <div
                 data-controller="form-collection"
                 data-form-collection-max-items-value="10"
