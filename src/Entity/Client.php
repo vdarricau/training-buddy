@@ -56,6 +56,7 @@ class Client implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="client", orphanRemoval=true)
+     * @ORM\OrderBy({"date" = "ASC"})
      */
     private $workouts;
 
