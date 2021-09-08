@@ -1,0 +1,35 @@
+default:
+    image: php:8.0-nginx
+    services:
+        - name: postgres:13-alpine
+          alias: postgres
+
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - vendor/
+
+variables:
+    POSTGRES_USER: main
+    POSTGRES_PASSWORD: main
+    POSTGRES_DB: main
+    DATABASE_URL: 'postgresql://main:main@postgres:5432/main'
+
+static_analysis:
+    stage: analysis
+    script:
+        - sh scripts/ci-php-install.sh
+        - php bin/composer.phar install -o
+        - symfony composer lint
+
+phpunit:
+    stage: test
+    script:
+        - sh scripts/ci-php-install.sh
+        - php bin/composer.phar install -o
+        - sh scripts/php_test_run.sh
+
+stages:
+    - install
+    - analysis
+    - test
