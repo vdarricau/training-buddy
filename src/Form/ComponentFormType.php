@@ -8,6 +8,7 @@ use App\Entity\Component;
 use App\Entity\Variation;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,6 +21,11 @@ class ComponentFormType extends AbstractType
             ->add('setAndRep')
             ->add('variation', EntityType::class, [
                 'class' => Variation::class,
+            ])
+            ->add('orderNumber', HiddenType::class, [
+                'attr' => [
+                    'data-workout-form-target' => 'orderNumber',
+                ]
             ])
         ;
     }

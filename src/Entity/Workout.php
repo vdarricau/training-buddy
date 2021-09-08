@@ -44,6 +44,7 @@ class Workout
 
     /**
      * @ORM\OneToMany(targetEntity=Component::class, mappedBy="workout", orphanRemoval=true)
+     * @ORM\OrderBy({"orderNumber" = "ASC"})
      */
     private $components;
 

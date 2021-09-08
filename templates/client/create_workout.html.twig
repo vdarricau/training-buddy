@@ -3,6 +3,57 @@
 {% block title %}Create workout{% endblock %}
 
 {% block body %}
-    {{ form(workout_form) }} {# TODO handle components and stuff, this will be manual bruh #}
+    {% macro collection_item(form) %}
+        <li class="card card-body mb-2" data-form-collection-target="field">
+            {{ form_widget(form) }}
+            <button
+                    class="btn btn-sm btn-danger"
+                    data-action="form-collection#removeItem"
+            >
+                Remove
+            </button>
+        </li>
+    {% endmacro %}
+
+    {% import _self as formMacros %}
+
+
+    <div data-controller="workout-form">
+        {{ form_start(workout_form) }}
+        {{ form_row(workout_form.title) }}
+        {{ form_row(workout_form.date) }}
+
+        <div
+                data-controller="form-collection"
+                data-form-collection-max-items-value="10"
+                data-form-collection-prototype-value="{{ formMacros.collection_item(workout_form.components.vars.prototype)|json_encode }}"
+        >
+            <h3>Components</h3>
+            <ul
+                    class="mt-1 component-forms-container"
+                    data-workout-form-target="componentList"
+                    data-form-collection-target="fields"
+            >
+                {% do workout_form.components.setRendered %}
+                {% for component in workout_form.components %}
+                    {{ formMacros.collection_item(component) }}
+                {% endfor %}
+            </ul>
+
+            <button
+                    class="btn btn-sm btn-primary"
+                    type="button"
+                    data-action="form-collection#addItem"
+            >
+                Add new
+            </button>
+        </div>
+
+        <hr>
+
+        {{ form_row(workout_form.submit) }}
+
+        {{ form_end(workout_form) }}
+    </div>
 {% endblock %}
 
