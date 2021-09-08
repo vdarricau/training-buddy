@@ -12,7 +12,6 @@ export default class extends Controller {
     }
 
     setOrder() {
-        console.log('blablou')
         this.orderNumberTargets.forEach((element, index) => {
             element.value = index;
         })
