@@ -23,6 +23,7 @@
         "heroku-postbuild": "node_modules/.bin/encore production"
     },
     "dependencies": {
-        "@popperjs/core": "^2.10.1"
+        "@popperjs/core": "^2.10.1",
+        "sortablejs": "^1.14.0"
     }
 }
