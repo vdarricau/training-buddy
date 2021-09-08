@@ -1,5 +1,5 @@
 default:
-    image: php:8.0-nginx
+    image: php:8.0-apache
     services:
         - name: postgres:13-alpine
           alias: postgres
