@@ -1,4 +1,4 @@
-php bin/console doctrine:database:drop --force
-php bin/console doctrine:database:create
-php bin/console doctrine:schema:update --force
-php bin/phpunit
+symfony console doctrine:database:drop --force
+symfony console doctrine:database:create
+symfony console doctrine:schema:update --force
+symfony php bin/phpunit
