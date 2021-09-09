@@ -16,6 +16,12 @@ variables:
     DATABASE_URL: 'postgresql://main:main@postgres:5432/main'
     APP_ENV: test
 
+stages:
+    - analysis
+    - test
+    - deploy
+
+######### Analysis ###########
 static_analysis:
     stage: analysis
     script:
@@ -23,6 +29,7 @@ static_analysis:
         - symfony composer install -o
         - symfony composer lint
 
+######### Test ###########
 phpunit:
     stage: test
     script:
@@ -30,6 +37,25 @@ phpunit:
         - symfony composer install -o
         - sh scripts/php_test_run.sh
 
-stages:
-    - analysis
-    - test
+######### Deploy ###########
+.deploy_template: &deploy_configuration  # Hidden yaml configuration that defines an anchor named 'job_configuration'
+    stage: deploy
+    when: manual
+    before_script:
+        - apt-get update -qy
+        - apt-get install -y ruby-dev
+        - gem install dpl
+
+staging:
+    <<: *deploy_configuration
+    script:
+        - dpl --provider=heroku --app=mytrainingbuddy-staging --api_key=$HEROKU_API_KEY
+    only:
+        - master
+
+production:
+    <<: *deploy_configuration
+    script:
+        - dpl --provider=heroku --app=mytrainingbuddy --api_key=$HEROKU_API_KEY
+    only:
+        - tags
