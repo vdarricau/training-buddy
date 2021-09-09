@@ -8,7 +8,7 @@ set -xe
 apt-get update \
 && apt-get install -y \
 && apt-get autoremove -y \
-&& apt-get install libpq-dev -y \
+&& apt-get install libpq-dev libxslt-dev -y \
 && docker-php-ext-install pdo pdo_pgsql xsl \
 && apt-get install git -y\
 && apt-get install zip -y\
