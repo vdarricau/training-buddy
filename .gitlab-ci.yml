@@ -49,7 +49,7 @@ staging:
     script:
         - dpl --provider=heroku --app=mytrainingbuddy-staging --api_key=$HEROKU_API_KEY
     only:
-        - master
+        - /^release\/.+$/
 
 production:
     <<: *deploy_configuration
