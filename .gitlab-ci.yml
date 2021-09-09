@@ -41,7 +41,7 @@ phpunit:
     when: manual
     before_script:
         - apt-get update -qy
-        - apt-get install -y ruby-dev
+        - apt-get install -y ruby-dev git
         - gem install dpl
 
 staging:
