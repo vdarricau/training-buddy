@@ -15,4 +15,5 @@ apt-get update \
 && curl -sS https://get.symfony.com/cli/installer | bash \
 && mv /root/.symfony/bin/symfony /usr/local/bin/symfony \
 && curl -sS https://getcomposer.org/installer | php \
-&& mv composer.phar /usr/local/bin/composer
+&& mv composer.phar /usr/local/bin/composer \
+&& symfony composer install -o
