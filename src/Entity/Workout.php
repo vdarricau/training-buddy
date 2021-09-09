@@ -7,7 +7,6 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * @ORM\Entity(repositoryClass=WorkoutRepository::class)
@@ -155,6 +154,6 @@ class Workout
 
     public function __toString(): string
     {
-        return $this->getTitle() . ' - '. $this->getDate()->format('Y-m-d h:m:i');
+        return $this->getTitle() . ' - ' . $this->getDate()->format('Y-m-d h:m:i');
     }
 }

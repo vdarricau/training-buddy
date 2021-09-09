@@ -1,0 +1,59 @@
+default:
+    image: php:8.0-apache
+    services:
+        - name: postgres:13-alpine
+          alias: postgres
+
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - vendor/
+
+variables:
+    POSTGRES_USER: main
+    POSTGRES_PASSWORD: main
+    POSTGRES_DB: main
+    DATABASE_URL: 'postgresql://main:main@postgres:5432/main'
+    APP_ENV: test
+
+stages:
+    - analysis
+    - test
+    - deploy
+
+######### Analysis ###########
+static_analysis:
+    stage: analysis
+    script:
+        - sh scripts/ci-php-install.sh
+        - symfony composer lint
+
+######### Test ###########
+phpunit:
+    stage: test
+    script:
+        - sh scripts/ci-php-install.sh
+        - sh scripts/php_test_run.sh
+
+######### Deploy ###########
+.deploy_template: &deploy_configuration  # Hidden yaml configuration that defines an anchor named 'job_configuration'
+    stage: deploy
+    when: manual
+    before_script:
+        - apt-get update -qy
+        - apt-get install -y ruby-dev
+        - gem install dpl
+
+staging:
+    <<: *deploy_configuration
+    script:
+        - dpl --provider=heroku --app=mytrainingbuddy-staging --api_key=$HEROKU_API_KEY
+    only:
+        - master
+
+production:
+    <<: *deploy_configuration
+    script:
+        - dpl --provider=heroku --app=mytrainingbuddy --api_key=$HEROKU_API_KEY
+    only:
+        - tags
