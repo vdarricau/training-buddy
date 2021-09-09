@@ -9,7 +9,7 @@ apt-get update \
 && apt-get install -y \
 && apt-get autoremove -y \
 && apt-get install libpq-dev -y \
-&& docker-php-ext-install pdo pdo_pgsql \
+&& docker-php-ext-install pdo pdo_pgsql xsl \
 && apt-get install git -y\
 && apt-get install zip -y\
 && curl -sS https://get.symfony.com/cli/installer | bash \

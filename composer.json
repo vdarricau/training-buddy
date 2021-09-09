@@ -7,6 +7,8 @@
         "php": ">= 8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-sodium": "*",
+        "ext-xsl": "*",
         "composer/package-versions-deprecated": "1.11.99.3",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
