@@ -7,6 +7,8 @@
         "php": ">= 8.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-sodium": "*",
+        "ext-xsl": "*",
         "composer/package-versions-deprecated": "1.11.99.3",
         "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
@@ -41,6 +43,7 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^3.6",
         "symfony/browser-kit": "5.3.*",
         "symfony/css-selector": "5.3.*",
         "symfony/debug-bundle": "5.3.*",
@@ -84,7 +87,9 @@
         ],
         "compile": [
             "php bin/console doctrine:migrations:migrate"
-        ]
+        ],
+        "lint": "vendor/bin/phpcs --warning-severity=6",
+        "lint-fix": "vendor/bin/phpcbf"
     },
     "conflict": {
         "symfony/symfony": "*"
