@@ -6,6 +6,7 @@ use App\Entity\Client;
 use App\Entity\Component;
 use App\Entity\Workout;
 use App\Form\WorkoutFormType;
+use App\Repository\WorkoutRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,17 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class ClientController extends AbstractController
 {
     #[Route('/client', name: 'client')]
-    public function index(): Response
+    public function index(WorkoutRepository $workoutRepository): Response
     {
         /** @var Client $client */
         $client = $this->getUser();
 
-        /** @var Workout[] $workouts */
-        $workouts = $client->getWorkouts();
-
         return $this->render('client/index.html.twig', [
-            'controller_name' => 'ClientController',
-            'workouts' => $workouts,
+            'past_workouts' => $workoutRepository->findPastWorkoutForAClient($client),
+            'upcoming_workouts' => $workoutRepository->findUpcomingWorkouts($client),
         ]);
     }
 
