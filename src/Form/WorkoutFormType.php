@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Workout;
+use Carbon\Carbon;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,11 +20,14 @@ class WorkoutFormType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('date', DateTimeType::class, [
+            ->add('description', TextareaType::class)
+            ->add('warmup', TextareaType::class)
+            ->add('date', DateType::class, [
                 'widget' => 'single_text',
-
-                // prevents rendering it as type="date", to avoid HTML5 date pickers
                 'html5' => true,
+                'attr' => [
+                    'min' => Carbon::today()->toDateString(),
+                ]
             ])
             ->add('components', CollectionType::class, [
                 'entry_type' => ComponentFormType::class,

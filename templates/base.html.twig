@@ -11,7 +11,6 @@
 </head>
 <body>
 <header>
-    <!-- As a heading -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ path('homepage') }}">Training buddy</a>
@@ -45,7 +44,7 @@
         </div>
     </nav>
 </header>
-<main role="main" class="container mt-5">
+<main role="main" class="container mt-4">
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}

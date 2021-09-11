@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create workout{% endblock %}
+{% block title %}Create/Update workout{% endblock %}
 
 {% block body %}
     {% macro collection_item(form) %}
@@ -9,7 +9,7 @@
             <button
                     class="btn btn-sm btn-danger"
                     data-action="form-collection#removeItem"
-            >
+            > {# TOOD can't remove first one#}
                 Remove
             </button>
         </li>
@@ -21,12 +21,14 @@
         {{ form_start(workout_form) }}
         {{ form_row(workout_form.title) }}
         {{ form_row(workout_form.date) }}
+        {{ form_row(workout_form.description) }}
+        {{ form_row(workout_form.warmup) }}
         <div
                 data-controller="form-collection"
                 data-form-collection-max-items-value="10"
                 data-form-collection-prototype-value="{{ formMacros.collection_item(workout_form.components.vars.prototype)|json_encode }}"
         >
-            <h3>Components</h3>
+            <h3>Exercises</h3>
             <ul
                     class="mt-1 component-forms-container"
                     data-workout-form-target="componentList"
@@ -51,6 +53,8 @@
         <hr>
 
         {{ form_row(workout_form.submit) }}
+
+        <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Cancel</a>
 
         {{ form_end(workout_form) }}
     </div>

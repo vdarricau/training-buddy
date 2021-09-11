@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\WorkoutRepository;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +14,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Workout
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_STARTED = 'started';
+    public const STATUS_FINISHED = 'finished';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -33,7 +38,7 @@ class Workout
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = 'pending';
+    private $status = self::STATUS_PENDING;
 
     /**
      * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="workouts")
@@ -51,6 +56,16 @@ class Workout
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $warmup;
 
     public function __construct()
     {
@@ -150,6 +165,38 @@ class Workout
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getWarmup(): ?string
+    {
+        return $this->warmup;
+    }
+
+    public function setWarmup(?string $warmup): self
+    {
+        $this->warmup = $warmup;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPast(): bool
+    {
+        return (new Carbon($this->date))->isPast();
     }
 
     public function __toString(): string
