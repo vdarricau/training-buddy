@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Client;
 use App\Entity\Workout;
+use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,5 +19,45 @@ class WorkoutRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Workout::class);
+    }
+
+    /**
+     * @param Client $client
+     * @return Workout[]
+     */
+    public function findPastWorkoutForAClient(Client $client): array
+    {
+        $query = $this->createQueryBuilder('workout')
+            ->andWhere('workout.client = :client')
+            ->andWhere('workout.date < :today')
+            ->setParameters([
+                'client' => $client,
+                'today' => Carbon::today(),
+            ])
+            ->getQuery()
+        ;
+
+        return $query->getResult();
+    }
+
+    /**
+     * TODO tests
+     *
+     * @param Client $client
+     * @return Workout[]
+     */
+    public function findUpcomingWorkouts(Client $client)
+    {
+        $query = $this->createQueryBuilder('workout')
+            ->andWhere('workout.client = :client')
+            ->andWhere('workout.date >= :today')
+            ->setParameters([
+                'client' => $client,
+                'today' => Carbon::today(),
+            ])
+            ->getQuery()
+        ;
+
+        return $query->getResult();
     }
 }

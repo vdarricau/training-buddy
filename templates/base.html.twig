@@ -11,7 +11,6 @@
 </head>
 <body>
 <header>
-    <!-- As a heading -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ path('homepage') }}">Training buddy</a>
@@ -30,6 +29,9 @@
                 <ul class="navbar-nav">
                     {% if app.user %}
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ path('client') }}">Workouts</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
                         </li>
                     {% else %}
@@ -45,7 +47,7 @@
         </div>
     </nav>
 </header>
-<main role="main" class="container mt-5">
+<main role="main" class="container mt-4">
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}

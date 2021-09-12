@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Component;
-use App\Entity\Variation;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,9 +17,9 @@ class ComponentFormType extends AbstractType
         $builder
             ->add('title')
             ->add('setAndRep')
-            ->add('variation', EntityType::class, [
-                'class' => Variation::class,
-            ])
+//            ->add('variation', EntityType::class, [ // We'll come back to that later
+//                'class' => Variation::class,
+//            ])
             ->add('orderNumber', HiddenType::class, [
                 'attr' => [
                     'data-workout-form-target' => 'orderNumber',

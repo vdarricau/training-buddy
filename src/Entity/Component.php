@@ -146,6 +146,6 @@ class Component
     #[Pure]
     public function __toString(): string
     {
-        return $this->getTitle() . ' - ' . $this->getVariation();
+        return $this->getTitle();
     }
 }

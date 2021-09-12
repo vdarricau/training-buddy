@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View workout{% endblock %}
+
+{% block body %}
+    <div>
+        <h1>{{ workout }}</h1>
+        <p>{{ workout.description|nl2br }}</p>
+        {% if workout.warmup %}
+            <p>
+                <b>Warmup:</b><br>
+                {{ workout.warmup|nl2br }}
+            </p>
+        {% endif %}
+        <div>
+            <h3>Exercises</h3>
+            <ul
+                    class="mt-1 component-forms-container"
+            >
+                {% for component in workout.components %}
+                    <li class="card card-body mb-2">
+                        <div class="float-end">
+                            <input type="checkbox"> {# TODO #}
+                        </div>
+                        <div>
+                            <h3>{{ component.title }}</h3>
+                            <sub>{{ component.setAndRep|nl2br }}</sub>
+                            <div class="mb-3">
+                                <label for="component_form_note" class="form-label required">Notes</label>
+                                <textarea
+                                        id="component_form_note"
+                                        class="form-control"
+                                >{{ component.note }}</textarea>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label for="component_form_note" class="form-label required">Notes</label>
+            <textarea
+                    id="component_form_note"
+                    class="form-control"
+            >{{ workout.note }}</textarea>
+        </div>
+    </div>
+    <div class="mb-4">
+        <a href="#" class="btn btn-lg btn-success">Finish</a>
+        <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Back to workouts</a>
+    </div>
+{% endblock %}
