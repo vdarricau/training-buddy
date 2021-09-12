@@ -6,10 +6,12 @@
     <div>
         <h1>{{ workout }}</h1>
         <p>{{ workout.description|nl2br }}</p>
-        <p>
-            <b>Warmup:</b><br>
-            {{ workout.warmup|nl2br }}
-        </p>
+        {% if workout.warmup %}
+            <p>
+                <b>Warmup:</b><br>
+                {{ workout.warmup|nl2br }}
+            </p>
+        {% endif %}
         <div>
             <h3>Exercises</h3>
             <ul
@@ -28,9 +30,7 @@
                                 <textarea
                                         id="component_form_note"
                                         class="form-control"
-                                >
-                                        {{ component.note }}
-                                    </textarea>
+                                >{{ component.note }}</textarea>
                             </div>
                         </div>
                     </li>
@@ -41,10 +41,8 @@
             <label for="component_form_note" class="form-label required">Notes</label>
             <textarea
                     id="component_form_note"
-                    required="required" class="form-control"
-            >
-                    {{ workout.note }}
-                </textarea>
+                    class="form-control"
+            >{{ workout.note }}</textarea>
         </div>
     </div>
     <div class="mb-4">

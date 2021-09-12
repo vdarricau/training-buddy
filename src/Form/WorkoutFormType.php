@@ -20,8 +20,12 @@ class WorkoutFormType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('description', TextareaType::class)
-            ->add('warmup', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false,
+            ])
+            ->add('warmup', TextareaType::class, [
+                'required' => false,
+            ])
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,

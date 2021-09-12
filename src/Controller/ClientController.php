@@ -7,6 +7,7 @@ use App\Entity\Component;
 use App\Entity\Workout;
 use App\Form\WorkoutFormType;
 use App\Repository\WorkoutRepository;
+use App\Security\Voter\WorkoutVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,12 +46,16 @@ class ClientController extends AbstractController
     #[Route('/client/workout/edit/{id}', name: 'client_workout_edit')]
     public function editWorkoutAction(Workout $workout, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(WorkoutVoter::EDIT, $workout);
+
         return $this->handleWorkoutForm($workout, $request);
     }
 
     #[Route('/client/workout/start/{id}', name: 'client_workout_start')]
     public function startWorkoutAction(Workout $workout): Response
     {
+        $this->denyAccessUnlessGranted(WorkoutVoter::VIEW, $workout);
+
         // TODO workflow
         if ($workout->getStatus() === Workout::STATUS_PENDING) {
             $workout->setStatus(Workout::STATUS_STARTED);
@@ -67,6 +72,8 @@ class ClientController extends AbstractController
     #[Route('/client/workout/view/{id}', name: 'client_workout_view')]
     public function viewWorkoutAction(Workout $workout): Response
     {
+        $this->denyAccessUnlessGranted(WorkoutVoter::VIEW, $workout);
+
         return $this->render('workout/view.html.twig', [
             'workout' => $workout,
         ]);

@@ -45,8 +45,6 @@
                                         class="btn btn-sm btn-success d-block mb-2">
                                     Start
                                 </a>
-                            {% endif %}
-                            {% if workout.isPast == false %}
                                 <a
                                         href="{{ path('client_workout_edit', {'id': workout.id}) }}"
                                         class="btn btn-sm btn-primary d-block">
