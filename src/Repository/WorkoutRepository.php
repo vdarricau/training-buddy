@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Client;
+use App\Entity\User;
 use App\Entity\Workout;
 use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -22,13 +22,13 @@ class WorkoutRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Client $client
+     * @param User $client
      * @return Workout[]
      */
-    public function findPastWorkoutForAClient(Client $client): array
+    public function findPastWorkoutForAClient(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
-            ->andWhere('workout.client = :client')
+            ->andWhere('workout.user = :client')
             ->andWhere('workout.date < :today')
             ->setParameters([
                 'client' => $client,
@@ -43,13 +43,13 @@ class WorkoutRepository extends ServiceEntityRepository
     /**
      * TODO tests
      *
-     * @param Client $client
+     * @param User $client
      * @return Workout[]
      */
-    public function findUpcomingWorkouts(Client $client)
+    public function findUpcomingWorkouts(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
-            ->andWhere('workout.client = :client')
+            ->andWhere('workout.user = :client')
             ->andWhere('workout.date >= :today')
             ->setParameters([
                 'client' => $client,

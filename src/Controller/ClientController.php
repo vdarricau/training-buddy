@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
 use App\Entity\Component;
+use App\Entity\User;
 use App\Entity\Workout;
 use App\Form\WorkoutFormType;
 use App\Repository\WorkoutRepository;
@@ -24,7 +24,6 @@ class ClientController extends AbstractController
     #[Route('/client', name: 'client')]
     public function indexAction(WorkoutRepository $workoutRepository): Response
     {
-        /** @var Client $client */
         $client = $this->getUser();
 
         return $this->render('client/index.html.twig', [
@@ -93,9 +92,8 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Client $client */
             $client = $this->getUser();
-            $workout->setClient($client);
+            $workout->setUser($client);
 
             $this->entityManager->persist($workout);
             foreach ($workout->getComponents() as $component) {
@@ -110,5 +108,13 @@ class ClientController extends AbstractController
         return $this->render('workout/form.html.twig', [
             'workout_form' => $form->createView(),
         ]);
+    }
+
+    protected function getUser(): User
+    {
+        // TODO: add client model here
+        $client = parent::getUser();
+
+        return $client;
     }
 }

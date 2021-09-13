@@ -6,7 +6,7 @@ namespace App\Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
 
-class ClientTest extends TestCase
+class UserTest extends TestCase
 {
     /**
      * @test

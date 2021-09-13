@@ -2,19 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=ClientRepository::class)
- * @method string getUserIdentifier()
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\Table(name="user_account")
  */
-class Client implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -183,7 +184,7 @@ class Client implements UserInterface
     {
         if (!$this->workouts->contains($workout)) {
             $this->workouts[] = $workout;
-            $workout->setClient($this);
+            $workout->setUser($this);
         }
 
         return $this;
@@ -193,11 +194,16 @@ class Client implements UserInterface
     {
         if ($this->workouts->removeElement($workout)) {
             // set the owning side to null (unless already changed)
-            if ($workout->getClient() === $this) {
-                $workout->setClient(null);
+            if ($workout->getUser() === $this) {
+                $workout->setUser(null);
             }
         }
 
         return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return 'email';
     }
 }
