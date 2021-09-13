@@ -14,7 +14,7 @@ final class Version20210913112916 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create user/workout/components/exercise/variation tables + setup messenger in doctrine';
     }
 
     public function up(Schema $schema): void
