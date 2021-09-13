@@ -8,6 +8,7 @@ use App\Entity\Workout;
 use App\Form\WorkoutFormType;
 use App\Repository\WorkoutRepository;
 use App\Security\Voter\WorkoutVoter;
+use App\Service\Flasher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,8 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClientController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private Flasher $flasher
+    ) {
     }
 
     #[Route('/client', name: 'client')]
@@ -39,7 +42,7 @@ class ClientController extends AbstractController
         $component = new Component();
         $workout->getComponents()->add($component);
 
-        return $this->handleWorkoutForm($workout, $request);
+        return $this->handleWorkoutForm($workout, $request, false);
     }
 
     #[Route('/client/workout/edit/{id}', name: 'client_workout_edit')]
@@ -47,7 +50,7 @@ class ClientController extends AbstractController
     {
         $this->denyAccessUnlessGranted(WorkoutVoter::EDIT, $workout);
 
-        return $this->handleWorkoutForm($workout, $request);
+        return $this->handleWorkoutForm($workout, $request, true);
     }
 
     #[Route('/client/workout/start/{id}', name: 'client_workout_start')]
@@ -81,11 +84,13 @@ class ClientController extends AbstractController
     /**
      * @param Workout $workout
      * @param Request $request
+     * @param bool $isUpdate
      * @return RedirectResponse|Response
      */
     protected function handleWorkoutForm(
         Workout $workout,
         Request $request,
+        bool $isUpdate
     ): Response|RedirectResponse {
         $form = $this->createForm(WorkoutFormType::class, $workout);
 
@@ -102,7 +107,15 @@ class ClientController extends AbstractController
             }
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('client');
+            if ($isUpdate) {
+                $this->flasher->addSuccess('Your workout has been updated.');
+            } else {
+                $this->flasher->addSuccess('Your workout has been created.');
+            }
+
+            return $this->redirectToRoute('client_workout_view', [
+                'id' => $workout->getId(),
+            ]);
         }
 
         return $this->render('workout/form.html.twig', [
@@ -112,9 +125,7 @@ class ClientController extends AbstractController
 
     protected function getUser(): User
     {
-        // TODO: add client model here
-        $client = parent::getUser();
-
-        return $client;
+        // TODO: add client model here, to introduce maybe when we'll have a trainer
+        return parent::getUser();
     }
 }

@@ -60,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     /**
-     * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="client", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="user", orphanRemoval=true)
      * @ORM\OrderBy({"date" = "ASC"})
      */
     private $workouts;

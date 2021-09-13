@@ -48,8 +48,10 @@
     </nav>
 </header>
 <main role="main" class="container mt-4">
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% for type, messages in app.flashes(constant('App\\Service\\Flasher::FLASH_TYPES')) %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }}" role="alert">{{ message }}</div>
+        {% endfor %}
     {% endfor %}
     {% block body %}{% endblock %}
 </main>
