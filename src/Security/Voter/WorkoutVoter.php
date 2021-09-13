@@ -2,7 +2,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Client;
+use App\Entity\User;
 use App\Entity\Workout;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -51,7 +51,7 @@ class WorkoutVoter extends Voter
 
     private function canEdit(Workout $subject, UserInterface $user): bool
     {
-        if ($user instanceof Client) {
+        if ($user instanceof User) {
             return $user->getWorkouts()->contains($subject);
         }
 
@@ -62,7 +62,7 @@ class WorkoutVoter extends Voter
 
     private function canView(Workout $subject, UserInterface $user): bool
     {
-        if ($user instanceof Client) {
+        if ($user instanceof User) {
             return $user->getWorkouts()->contains($subject);
         }
 
