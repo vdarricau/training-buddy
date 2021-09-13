@@ -208,6 +208,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return 'email';
+        return sprintf(
+            '%s %s (%s)',
+            $this->getFirstname(),
+            $this->getLastname(),
+            $this->getEmail()
+        );
     }
 }
