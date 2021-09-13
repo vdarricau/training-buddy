@@ -52,7 +52,7 @@ class WorkoutVoter extends Voter
     private function canEdit(Workout $subject, UserInterface $user): bool
     {
         if ($user instanceof User) {
-            return $user->getWorkouts()->contains($subject);
+            return $user->getClientWorkouts()->contains($subject);
         }
 
         // TODO add trainer logic here later
@@ -63,7 +63,7 @@ class WorkoutVoter extends Voter
     private function canView(Workout $subject, UserInterface $user): bool
     {
         if ($user instanceof User) {
-            return $user->getWorkouts()->contains($subject);
+            return $user->getClientWorkouts()->contains($subject);
         }
 
         // TODO add trainer logic here later

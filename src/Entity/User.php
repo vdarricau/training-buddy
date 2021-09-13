@@ -63,11 +63,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"date" = "ASC"})
      */
-    private $workouts;
+    private $clientWorkouts;
 
     public function __construct()
     {
-        $this->workouts = new ArrayCollection();
+        $this->clientWorkouts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,27 +179,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection|Workout[]
      */
-    public function getWorkouts(): Collection
+    public function getClientWorkouts(): Collection
     {
-        return $this->workouts;
+        return $this->clientWorkouts;
     }
 
-    public function addWorkout(Workout $workout): self
+    public function addClientWorkout(Workout $workout): self
     {
-        if (!$this->workouts->contains($workout)) {
-            $this->workouts[] = $workout;
-            $workout->setUser($this);
+        if (!$this->clientWorkouts->contains($workout)) {
+            $this->clientWorkouts[] = $workout;
+            $workout->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeWorkout(Workout $workout): self
+    public function removeClientWorkout(Workout $workout): self
     {
-        if ($this->workouts->removeElement($workout)) {
+        if ($this->clientWorkouts->removeElement($workout)) {
             // set the owning side to null (unless already changed)
-            if ($workout->getUser() === $this) {
-                $workout->setUser(null);
+            if ($workout->getClient() === $this) {
+                $workout->setClient(null);
             }
         }
 
