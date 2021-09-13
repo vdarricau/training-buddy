@@ -41,10 +41,10 @@ class Workout
     private $status = self::STATUS_PENDING;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="workouts")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="clientWorkouts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private $client;
 
     /**
      * @ORM\OneToMany(targetEntity=Component::class, mappedBy="workout", orphanRemoval=true)
@@ -113,14 +113,14 @@ class Workout
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getClient(): ?User
     {
-        return $this->user;
+        return $this->client;
     }
 
-    public function setUser(?User $user): self
+    public function setClient(?User $client): self
     {
-        $this->user = $user;
+        $this->client = $client;
 
         return $this;
     }

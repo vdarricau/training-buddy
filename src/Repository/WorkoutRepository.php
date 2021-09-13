@@ -28,7 +28,7 @@ class WorkoutRepository extends ServiceEntityRepository
     public function findPastWorkoutForAClient(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
-            ->andWhere('workout.user = :client')
+            ->andWhere('workout.client = :client')
             ->andWhere('workout.date < :today')
             ->setParameters([
                 'client' => $client,
@@ -49,7 +49,7 @@ class WorkoutRepository extends ServiceEntityRepository
     public function findUpcomingWorkouts(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
-            ->andWhere('workout.user = :client')
+            ->andWhere('workout.client = :client')
             ->andWhere('workout.date >= :today')
             ->setParameters([
                 'client' => $client,

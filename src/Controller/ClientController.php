@@ -98,7 +98,7 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $this->getUser();
-            $workout->setUser($client);
+            $workout->setClient($client);
 
             $this->entityManager->persist($workout);
             foreach ($workout->getComponents() as $component) {
