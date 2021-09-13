@@ -30,6 +30,11 @@
         <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
     </rule>
 
+    <!-- Test names are written in snake case -->
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>tests</exclude-pattern>
+    </rule>
+
     <!-- PSR2 Set -->
     <rule ref="PSR2">
         <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
