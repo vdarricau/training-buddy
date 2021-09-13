@@ -25,7 +25,7 @@ class WorkoutRepository extends ServiceEntityRepository
      * @param User $client
      * @return Workout[]
      */
-    public function findPastWorkoutForAClient(User $client): array
+    public function findPastWorkouts(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
             ->andWhere('workout.client = :client')
