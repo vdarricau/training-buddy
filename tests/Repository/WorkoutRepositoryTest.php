@@ -25,7 +25,8 @@ class WorkoutRepositoryTest extends KernelTestCase
 
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
-            ->getManager();
+            ->getManager()
+        ;
 
         $this->workoutRepository = $this->entityManager
             ->getRepository(Workout::class)
