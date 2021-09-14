@@ -35,7 +35,7 @@ phpunit:
     script:
         - sh scripts/ci-php-install.sh
         - npm i
-        - npm dev
+        - npm run dev
         - sh scripts/php_test_run.sh
 
 ######### Deploy ###########
