@@ -27,6 +27,20 @@ class UserBuilder
         $this->password = 'mitra123';
     }
 
+    public function withEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function withRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
     public function build(): User
     {
         $user = new User();
