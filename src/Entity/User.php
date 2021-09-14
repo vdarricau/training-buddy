@@ -99,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -214,5 +214,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->getLastname(),
             $this->getEmail()
         );
+    }
+
+    public function __toString(): string
+    {
+        return $this->getUserIdentifier();
     }
 }
