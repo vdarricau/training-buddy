@@ -57,7 +57,7 @@ class WorkoutBuilder
             $this->client = (new UserBuilder())->build();
         }
 
-        $workout->setClient($this->client);
+        $this->client->addClientWorkout($workout);
 
         return $workout;
     }
