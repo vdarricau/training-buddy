@@ -8,6 +8,7 @@ cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
         - vendor/
+        - node_modules/
 
 variables:
     POSTGRES_USER: main
@@ -33,6 +34,8 @@ phpunit:
     stage: test
     script:
         - sh scripts/ci-php-install.sh
+        - npm i
+        - npm run dev
         - sh scripts/php_test_run.sh
 
 ######### Deploy ###########

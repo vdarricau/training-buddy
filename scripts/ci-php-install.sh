@@ -12,6 +12,7 @@ apt-get update \
 && docker-php-ext-install pdo pdo_pgsql xsl \
 && apt-get install git -y\
 && apt-get install zip -y\
+&& apt-get install npm -y\
 && curl -sS https://get.symfony.com/cli/installer | bash \
 && mv /root/.symfony/bin/symfony /usr/local/bin/symfony \
 && curl -sS https://getcomposer.org/installer | php \
