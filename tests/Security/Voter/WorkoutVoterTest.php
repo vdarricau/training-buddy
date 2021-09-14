@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Security\Voter;
 
+use App\Entity\User;
 use App\Security\Voter\WorkoutVoter;
 use App\Tests\Entity\Builder\UserBuilder;
 use App\Tests\Entity\Builder\WorkoutBuilder;
@@ -48,17 +49,20 @@ class WorkoutVoterTest extends KernelTestCase
      */
     public function should_allow_client_owning_the_workout_to_edit_it(): void
     {
-        $user = (new UserBuilder())->build();
-
-        $fakeToken = new FakeToken();
-        $fakeToken->setUser($user);
-
-        $workout = (new WorkoutBuilder())
-            ->withClient($user)
+        $client = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
             ->build()
         ;
 
-        $this->entityManager->persist($user);
+        $fakeToken = new FakeToken();
+        $fakeToken->setUser($client);
+
+        $workout = (new WorkoutBuilder())
+            ->withClient($client)
+            ->build()
+        ;
+
+        $this->entityManager->persist($client);
         $this->entityManager->persist($workout);
         $this->entityManager->flush();
 
@@ -73,17 +77,20 @@ class WorkoutVoterTest extends KernelTestCase
      */
     public function should_allow_client_owning_the_workout_to_view_it(): void
     {
-        $user = (new UserBuilder())->build();
-
-        $fakeToken = new FakeToken();
-        $fakeToken->setUser($user);
-
-        $workout = (new WorkoutBuilder())
-            ->withClient($user)
+        $client = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
             ->build()
         ;
 
-        $this->entityManager->persist($user);
+        $fakeToken = new FakeToken();
+        $fakeToken->setUser($client);
+
+        $workout = (new WorkoutBuilder())
+            ->withClient($client)
+            ->build()
+        ;
+
+        $this->entityManager->persist($client);
         $this->entityManager->persist($workout);
         $this->entityManager->flush();
 
@@ -98,8 +105,14 @@ class WorkoutVoterTest extends KernelTestCase
      */
     public function should_not_allow_client_to_edit_other_client_workout(): void
     {
-        $client = (new UserBuilder())->build();
-        $anotherClient = (new UserBuilder())->build();
+        $client = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
+            ->build()
+        ;
+        $anotherClient = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
+            ->build()
+        ;
 
         $fakeToken = new FakeToken();
         $fakeToken->setUser($client);
@@ -125,8 +138,14 @@ class WorkoutVoterTest extends KernelTestCase
      */
     public function should_not_allow_client_to_view_other_client_workout(): void
     {
-        $client = (new UserBuilder())->build();
-        $anotherClient = (new UserBuilder())->build();
+        $client = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
+            ->build()
+        ;
+        $anotherClient = (new UserBuilder())
+            ->withRoles([User::ROLE_CLIENT])
+            ->build()
+        ;
 
         $fakeToken = new FakeToken();
         $fakeToken->setUser($client);
@@ -138,6 +157,34 @@ class WorkoutVoterTest extends KernelTestCase
 
         $this->entityManager->persist($client);
         $this->entityManager->persist($anotherClient);
+        $this->entityManager->persist($workout);
+        $this->entityManager->flush();
+
+        self::assertSame(
+            VoterInterface::ACCESS_DENIED,
+            (new WorkoutVoter())->vote($fakeToken, $workout, [WorkoutVoter::VIEW])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function should_not_allow_user_if_not_client(): void
+    {
+        $client = (new UserBuilder())
+            ->withRoles([User::ROLE_USER])
+            ->build()
+        ;
+
+        $fakeToken = new FakeToken();
+        $fakeToken->setUser($client);
+
+        $workout = (new WorkoutBuilder())
+            ->withClient($client)
+            ->build()
+        ;
+
+        $this->entityManager->persist($client);
         $this->entityManager->persist($workout);
         $this->entityManager->flush();
 

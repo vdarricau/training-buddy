@@ -127,6 +127,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function isClient(): bool
+    {
+        return in_array(self::ROLE_CLIENT, $this->getRoles(), true);
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
