@@ -24,5 +24,7 @@ class ClientFixtures extends Fixture
         $manager->persist($client);
 
         $manager->flush();
+
+        $this->addReference(self::CLIENT_EMAIL, $client);
     }
 }
