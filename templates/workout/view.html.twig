@@ -14,13 +14,24 @@
         {% endif %}
         <div>
             <h3>Exercises</h3>
-            <ul
-                    class="mt-1 component-forms-container"
-            >
+            <ul class="mt-1 component-forms-container">
                 {% for component in workout.components %}
-                    <li class="card card-body mb-2">
-                        <div class="float-end">
-                            <input type="checkbox"> {# TODO #}
+                    <li
+                            class="card card-body mb-2 bg-gradient bg-light"
+                            data-controller="component-update"
+                            data-component-update-component-id-value="{{ component.id }}"
+                            data-component-update-component-status-value="{{ component.status }}"
+                    >
+                        <div class="position-absolute end-0 me-3">
+                            <label>
+                                <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        data-action="component-update#updateComponent"
+                                        data-component-update-target="componentCheckbox"
+                                        {% if component.status == constant('App\\Entity\\Component::STATUS_DONE') %}checked{% endif %}
+                                >
+                            </label>
                         </div>
                         <div>
                             <h3>{{ component.title }}</h3>
@@ -30,6 +41,8 @@
                                 <textarea
                                         id="component_form_note"
                                         class="form-control"
+                                        data-component-update-target="componentNote"
+                                        data-action="change->component-update#updateComponent"
                                 >{{ component.note }}</textarea>
                             </div>
                         </div>

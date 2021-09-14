@@ -12,6 +12,9 @@
                             aria-controls="collapse-{{ workout.id }}"
                     >
                         {{ workout }}
+                        <span class="badge rounder-pill bg-{{ workout.status }} float-end">
+                            {{ workout.status }}
+                        </span>
                     </button>
                 </h2>
                 <div
@@ -39,12 +42,12 @@
                             </ol>
                         </div>
                         <div class="buttons">
+                            <a
+                                    href="{{ path('client_workout_view', {'id': workout.id}) }}"
+                                    class="btn btn-sm btn-success d-block mb-2">
+                                View
+                            </a>
                             {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
-                                <a
-                                        href="{{ path('client_workout_start', {'id': workout.id}) }}"
-                                        class="btn btn-sm btn-success d-block mb-2">
-                                    Start
-                                </a>
                                 <a
                                         href="{{ path('client_workout_edit', {'id': workout.id}) }}"
                                         class="btn btn-sm btn-primary d-block">

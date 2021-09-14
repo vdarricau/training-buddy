@@ -17,3 +17,22 @@ main {
 .hidden {
     display: none !important;
 }
+
+.bg-pending {
+    background-color: $secondary;
+}
+
+.bg-started {
+    background-color: $warning;
+}
+
+.bg-finished {
+    background-color: $success;
+}
+
+#accordion-workouts {
+    span.badge {
+        position: absolute;
+        right: 60px;
+    }
+}

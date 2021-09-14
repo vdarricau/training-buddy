@@ -11,6 +11,9 @@ use JetBrains\PhpStorm\Pure;
  */
 class Component
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_DONE = 'done';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,7 +45,7 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = 'pending';
+    private $status = self::STATUS_PENDING;
 
     /**
      * @ORM\ManyToOne(targetEntity=Variation::class)
@@ -95,12 +98,12 @@ class Component
         return $this;
     }
 
-    public function getWorkout(): ?Workout
+    public function getWorkout(): Workout
     {
         return $this->workout;
     }
 
-    public function setWorkout(?Workout $workout): self
+    public function setWorkout(Workout $workout): self
     {
         $this->workout = $workout;
 
