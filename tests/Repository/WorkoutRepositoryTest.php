@@ -17,6 +17,9 @@ class WorkoutRepositoryTest extends KernelTestCase
     private WorkoutRepository $workoutRepository;
     private EntityManagerInterface|null $entityManager;
 
+    /**
+     * @inheritDoc
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -33,6 +36,9 @@ class WorkoutRepositoryTest extends KernelTestCase
         ;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function tearDown(): void
     {
         parent::tearDown();
