@@ -2,22 +2,20 @@ import {Controller} from 'stimulus'
 
 export default class extends Controller {
     static values = {
-        componentId: Number,
-        componentStatus: String,
+        workoutId: Number,
     };
 
-    static targets = ['componentCheckbox', 'componentNote']
+    static targets = ['workoutNote']
 
-    updateComponent()
+    updateNote()
     {
         window.dispatchEvent(new CustomEvent('loadstart'));
 
         const formData = new FormData();
 
-        formData.append('component_update_form[status]', this.componentCheckboxTarget.checked ? 'done' : 'pending');
-        formData.append('component_update_form[note]', this.componentNoteTarget.value);
+        formData.append('workout_note_form[note]', this.workoutNoteTarget.value);
 
-        fetch('/client/workout/component/' + this.componentIdValue, {
+        fetch('/client/workout/' + this.workoutIdValue + '/note', {
             method: 'POST',
             body: formData
         }).then(function (response) {

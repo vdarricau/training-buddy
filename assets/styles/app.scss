@@ -36,3 +36,15 @@ main {
         right: 60px;
     }
 }
+
+.btn {
+    .spinner-border {
+        display: none;
+    }
+
+    &.btn-loading {
+        .spinner-border {
+            display: inline-block;
+        }
+    }
+}

@@ -50,16 +50,35 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="mb-3">
+        <div
+                class="mb-3"
+                {{ stimulus_controller('workout-note', {'workoutId': workout.id})}}
+        >
             <label for="component_form_note" class="form-label required">Notes</label>
             <textarea
                     id="component_form_note"
                     class="form-control"
+                    {{ stimulus_action('workout-note', 'updateNote', 'change') }}
+                    {{ stimulus_target('workout-note', 'workoutNote') }}
             >{{ workout.note }}</textarea>
         </div>
     </div>
-    <div class="mb-4">
-        <a href="#" class="btn btn-lg btn-success">Finish</a>
-        <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Back to workouts</a>
+    <div class="mb-4" {{ stimulus_controller('loading-button') }}>
+        <a
+                href="{{ path('client_workout_finish', {'id': workout.id}) }}"
+                class="btn btn-lg btn-success"
+                {{ stimulus_target('loading-button', 'button') }}
+        >
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Finish
+        </a>
+        <a
+                href="{{ path('client') }}"
+                class="btn btn-lg btn-danger"
+                {{ stimulus_target('loading-button', 'button') }}
+        >
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Back to workouts
+        </a>
     </div>
 {% endblock %}

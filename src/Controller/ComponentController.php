@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Component;
 use App\Entity\Workout;
-use App\Form\ComponentUpdateType;
+use App\Form\ComponentUpdateFormType;
 use App\Security\Voter\WorkoutVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,9 +24,9 @@ class ComponentController extends AbstractController
     public function updateComponentAction(Request $request, Component $component): Response
     {
         $workout = $component->getWorkout();
-        $this->denyAccessUnlessGranted(WorkoutVoter::EDIT, $workout);
+        $this->denyAccessUnlessGranted(WorkoutVoter::VIEW, $workout);
 
-        $componentForm = $this->createForm(ComponentUpdateType::class, $component);
+        $componentForm = $this->createForm(ComponentUpdateFormType::class, $component);
 
         $componentForm->handleRequest($request);
 
