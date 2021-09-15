@@ -17,6 +17,7 @@ class WorkoutBuilder
     private string $title;
     private string $description;
     private string $warmup;
+    private string $status;
 
     public function __construct()
     {
@@ -25,6 +26,7 @@ class WorkoutBuilder
         $this->title = 'Pull Workout';
         $this->description = '';
         $this->warmup = '';
+        $this->status = Workout::STATUS_PENDING;
     }
 
     public function withClient(User $client): self
@@ -48,6 +50,7 @@ class WorkoutBuilder
         $workout->setTitle($this->title);
         $workout->setDescription($this->description);
         $workout->setWarmup($this->warmup);
+        $workout->setStatus($this->status);
 
         foreach ($this->components as $component) {
             $workout->addComponent($component);
