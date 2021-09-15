@@ -71,6 +71,24 @@ class ClientController extends AbstractController
         ]);
     }
 
+    #[Route('/client/workout/finish/{id}', name: 'client_workout_finish')]
+    public function finishWorkoutAction(Workout $workout): Response
+    {
+        $this->denyAccessUnlessGranted(WorkoutVoter::VIEW, $workout);
+
+        // TODO workflow
+        if (in_array($workout->getStatus(), [Workout::STATUS_STARTED, Workout::STATUS_PENDING], true)) {
+            $workout->setStatus(Workout::STATUS_FINISHED);
+
+            $this->entityManager->persist($workout);
+            $this->entityManager->flush();
+        }
+
+        $this->flasher->addSuccess('Well done finishing your workout! Legend!');
+
+        return $this->redirectToRoute('client');
+    }
+
     #[Route('/client/workout/view/{id}', name: 'client_workout_view')]
     public function viewWorkoutAction(Workout $workout): Response
     {
