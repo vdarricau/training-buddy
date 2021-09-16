@@ -64,18 +64,29 @@
         </div>
     </div>
     <div class="mb-4" {{ stimulus_controller('loading-button') }}>
-        <a
-                href="{{ path('client_workout_finish', {'id': workout.id}) }}"
-                class="btn btn-lg btn-success"
-                {{ stimulus_target('loading-button', 'button') }}
-        >
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Finish
-        </a>
+        {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
+            <a
+                    href="{{ path('client_workout_edit', {'id': workout.id}) }}"
+                    class="btn btn-lg btn-primary"
+                    data-loading-button-target="button"
+
+            >
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Edit
+            </a>
+            <a
+                    href="{{ path('client_workout_finish', {'id': workout.id}) }}"
+                    class="btn btn-lg btn-success"
+                    data-loading-button-target="button"
+            >
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Finish
+            </a>
+        {% endif %}
         <a
                 href="{{ path('client') }}"
                 class="btn btn-lg btn-danger"
-                {{ stimulus_target('loading-button', 'button') }}
+                data-loading-button-target="button"
         >
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             Back to workouts

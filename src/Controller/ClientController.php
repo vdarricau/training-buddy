@@ -30,7 +30,7 @@ class ClientController extends AbstractController
         $client = $this->getUser();
 
         return $this->render('client/index.html.twig', [
-            'past_workouts' => $workoutRepository->findPastWorkouts($client),
+            'past_workouts' => $workoutRepository->findPastOrFinishedWorkouts($client),
             'upcoming_workouts' => $workoutRepository->findUpcomingWorkouts($client),
         ]);
     }

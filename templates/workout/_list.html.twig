@@ -37,7 +37,12 @@
                             {% endif %}
                             <ol type="A" class="d-inline-block">
                                 {% for component in workout.components %}
-                                    <li>{{ component }}</li>
+                                    <li>
+                                        {{ component }}
+                                        {% if component.status == constant('App\\Entity\\Component::STATUS_DONE') %}
+                                            <span class="bi bi-check"></span>
+                                        {% endif %}
+                                    </li>
                                 {% endfor %}
                             </ol>
                         </div>

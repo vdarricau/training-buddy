@@ -43,6 +43,20 @@ class WorkoutBuilder
         return $this;
     }
 
+    public function withStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function withTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
     public function build(): Workout
     {
         $workout = new Workout();

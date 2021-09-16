@@ -25,7 +25,6 @@
         {{ form_row(workout_form.warmup) }}
         <div
                 data-controller="form-collection"
-                data-form-collection-max-items-value="10"
                 data-form-collection-prototype-value="{{ formMacros.collection_item(workout_form.components.vars.prototype)|json_encode }}"
         >
             <h3>Exercises</h3>
