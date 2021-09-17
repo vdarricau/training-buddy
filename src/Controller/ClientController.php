@@ -27,10 +27,11 @@ class ClientController extends AbstractController
     #[Route('/client', name: 'client')]
     public function indexAction(WorkoutRepository $workoutRepository): Response
     {
+        /** @var User $client */
         $client = $this->getUser();
 
         return $this->render('client/index.html.twig', [
-            'past_workouts' => $workoutRepository->findPastWorkouts($client),
+            'past_workouts' => $workoutRepository->findPastOrFinishedWorkouts($client),
             'upcoming_workouts' => $workoutRepository->findUpcomingWorkouts($client),
         ]);
     }
@@ -39,10 +40,9 @@ class ClientController extends AbstractController
     public function createWorkoutAction(Request $request): Response
     {
         $workout = new Workout();
-        $component = new Component();
-        $workout->getComponents()->add($component);
+        $workout->getComponents()->add(new Component());
 
-        return $this->handleWorkoutForm($workout, $request, false);
+        return $this->handleWorkoutForm($workout, $request, true);
     }
 
     #[Route('/client/workout/edit/{id}', name: 'client_workout_edit')]
@@ -50,7 +50,7 @@ class ClientController extends AbstractController
     {
         $this->denyAccessUnlessGranted(WorkoutVoter::EDIT, $workout);
 
-        return $this->handleWorkoutForm($workout, $request, true);
+        return $this->handleWorkoutForm($workout, $request, false);
     }
 
     #[Route('/client/workout/start/{id}', name: 'client_workout_start')]
@@ -71,6 +71,24 @@ class ClientController extends AbstractController
         ]);
     }
 
+    #[Route('/client/workout/finish/{id}', name: 'client_workout_finish')]
+    public function finishWorkoutAction(Workout $workout): Response
+    {
+        $this->denyAccessUnlessGranted(WorkoutVoter::VIEW, $workout);
+
+        // TODO workflow
+        if (in_array($workout->getStatus(), [Workout::STATUS_STARTED, Workout::STATUS_PENDING], true)) {
+            $workout->setStatus(Workout::STATUS_FINISHED);
+
+            $this->entityManager->persist($workout);
+            $this->entityManager->flush();
+        }
+
+        $this->flasher->addSuccess('Well done finishing your workout! Legend!');
+
+        return $this->redirectToRoute('client');
+    }
+
     #[Route('/client/workout/view/{id}', name: 'client_workout_view')]
     public function viewWorkoutAction(Workout $workout): Response
     {
@@ -84,19 +102,20 @@ class ClientController extends AbstractController
     /**
      * @param Workout $workout
      * @param Request $request
-     * @param bool $isUpdate
+     * @param bool $isNew
      * @return RedirectResponse|Response
      */
     protected function handleWorkoutForm(
         Workout $workout,
         Request $request,
-        bool $isUpdate
+        bool $isNew
     ): Response|RedirectResponse {
         $form = $this->createForm(WorkoutFormType::class, $workout);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $client */
             $client = $this->getUser();
             $workout->setClient($client);
 
@@ -107,10 +126,10 @@ class ClientController extends AbstractController
             }
             $this->entityManager->flush();
 
-            if ($isUpdate) {
-                $this->flasher->addSuccess('Your workout has been updated.');
-            } else {
+            if ($isNew) {
                 $this->flasher->addSuccess('Your workout has been created.');
+            } else {
+                $this->flasher->addSuccess('Your workout has been updated.');
             }
 
             return $this->redirectToRoute('client_workout_view', [
@@ -120,12 +139,8 @@ class ClientController extends AbstractController
 
         return $this->render('workout/form.html.twig', [
             'workout_form' => $form->createView(),
+            'workout' => $workout,
+            'is_new' => $isNew,
         ]);
-    }
-
-    protected function getUser(): User
-    {
-        // TODO: add client model here, to introduce maybe when we'll have a trainer
-        return parent::getUser();
     }
 }

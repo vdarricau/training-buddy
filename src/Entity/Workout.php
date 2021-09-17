@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 
 /**
  * @ORM\Entity(repositoryClass=WorkoutRepository::class)
@@ -17,6 +18,12 @@ class Workout
     public const STATUS_PENDING = 'pending';
     public const STATUS_STARTED = 'started';
     public const STATUS_FINISHED = 'finished';
+
+    public const STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_STARTED,
+        self::STATUS_FINISHED,
+    ];
 
     /**
      * @ORM\Id
@@ -101,13 +108,17 @@ class Workout
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     public function setStatus(string $status): self
     {
+        if (false === in_array($status, self::STATUSES, true)) {
+            throw new LogicException(sprintf('[WORKOUT #%d] Status `%s` is not supported', $this->getId(), $status));
+        }
+
         $this->status = $status;
 
         return $this;

@@ -14,22 +14,36 @@
         {% endif %}
         <div>
             <h3>Exercises</h3>
-            <ul
-                    class="mt-1 component-forms-container"
-            >
+            <ul class="mt-1 component-forms-container">
                 {% for component in workout.components %}
-                    <li class="card card-body mb-2">
-                        <div class="float-end">
-                            <input type="checkbox"> {# TODO #}
+                    <li
+                            class="card card-body mb-4 bg-light"
+                            data-controller="component-update"
+                            data-component-update-component-id-value="{{ component.id }}"
+                            data-component-update-component-status-value="{{ component.status }}"
+                    >
+                        <div class="position-absolute end-0 me-3">
+                            <label>
+                                <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        data-action="component-update#updateComponent"
+                                        data-component-update-target="componentCheckbox"
+                                        {% if component.status == constant('App\\Entity\\Component::STATUS_DONE') %}checked{% endif %}
+                                >
+                            </label>
                         </div>
                         <div>
                             <h3>{{ component.title }}</h3>
-                            <sub>{{ component.setAndRep|nl2br }}</sub>
-                            <div class="mb-3">
+                            <sup>{{ component.setAndRep|nl2br }}</sup>
+
+                            <div>
                                 <label for="component_form_note" class="form-label required">Notes</label>
                                 <textarea
                                         id="component_form_note"
                                         class="form-control"
+                                        data-component-update-target="componentNote"
+                                        data-action="change->component-update#updateComponent"
                                 >{{ component.note }}</textarea>
                             </div>
                         </div>
@@ -37,16 +51,47 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="mb-3">
+        <div
+                class="mb-3"
+                data-controller="workout-note"
+                data-workout-note-workout-id-value="{{ workout.id }}"
+        >
             <label for="component_form_note" class="form-label required">Notes</label>
             <textarea
                     id="component_form_note"
                     class="form-control"
+                    data-action="change->workout-note#updateNote"
+                    data-workout-note-target="workoutNote"
             >{{ workout.note }}</textarea>
         </div>
     </div>
-    <div class="mb-4">
-        <a href="#" class="btn btn-lg btn-success">Finish</a>
-        <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Back to workouts</a>
+    <div class="mb-4" data-controller="loading-button">
+        {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
+            <a
+                    href="{{ path('client_workout_edit', {'id': workout.id}) }}"
+                    class="btn btn-lg btn-primary"
+                    data-loading-button-target="button"
+
+            >
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Edit
+            </a>
+            <a
+                    href="{{ path('client_workout_finish', {'id': workout.id}) }}"
+                    class="btn btn-lg btn-success"
+                    data-loading-button-target="button"
+            >
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Finish
+            </a>
+        {% endif %}
+        <a
+                href="{{ path('client') }}"
+                class="btn btn-lg btn-danger"
+                data-loading-button-target="button"
+        >
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Back to workouts
+        </a>
     </div>
 {% endblock %}

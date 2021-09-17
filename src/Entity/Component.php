@@ -5,12 +5,21 @@ namespace App\Entity;
 use App\Repository\ComponentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use LogicException;
 
 /**
  * @ORM\Entity(repositoryClass=ComponentRepository::class)
  */
 class Component
 {
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_DONE = 'done';
+
+    public const STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_DONE,
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -42,7 +51,7 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = 'pending';
+    private $status = self::STATUS_PENDING;
 
     /**
      * @ORM\ManyToOne(targetEntity=Variation::class)
@@ -95,25 +104,29 @@ class Component
         return $this;
     }
 
-    public function getWorkout(): ?Workout
+    public function getWorkout(): Workout
     {
         return $this->workout;
     }
 
-    public function setWorkout(?Workout $workout): self
+    public function setWorkout(Workout $workout): self
     {
         $this->workout = $workout;
 
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     public function setStatus(string $status): self
     {
+        if (false === in_array($status, self::STATUSES, true)) {
+            throw new LogicException('Status `%s` is not supported');
+        }
+
         $this->status = $status;
 
         return $this;

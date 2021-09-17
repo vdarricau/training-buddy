@@ -1,19 +1,117 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-icons/font/bootstrap-icons.css';
 
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
+
 main {
     flex: 1;
+}
+
+label.required:after {
+    content: " *";
+    color: $danger;
+}
+
+a {
+    text-decoration: none;
+
+    &:not(.btn):hover {
+        text-decoration: underline;
+    }
 }
 
 .component-forms-container {
     list-style: none;
     padding: 0;
+
+    .btn-remove {
+        position: absolute;
+        top: -0.8rem;
+        right: -0.8rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 0 0 0.1rem;
+        line-height: 0;
+        border-radius: 100%;
+        width: 1.5rem;
+        height: 1.5rem;
+    }
 }
 
 .hidden {
     display: none !important;
+}
+
+.bg-pending {
+    background-color: $secondary;
+}
+
+.bg-started {
+    background-color: $warning;
+}
+
+.bg-finished {
+    background-color: $success;
+}
+
+#accordion-workouts {
+    span.badge {
+        position: absolute;
+        right: 60px;
+    }
+}
+
+.btn {
+    .spinner-border {
+        display: none;
+    }
+
+    &.btn-loading {
+        cursor: wait;
+
+        .spinner-border {
+            display: inline-block;
+        }
+    }
+}
+
+input.form-check-input {
+    cursor: pointer;
+}
+
+////////////// Animations
+.grow {
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.5);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    33% {
+        transform: rotate(-20deg) scale(1.2);
+    }
+    66% {
+        transform: rotate(20deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.jiggle {
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        animation: shake 500ms ease-in-out forwards;
+        animation-iteration-count: infinite;
+    }
 }

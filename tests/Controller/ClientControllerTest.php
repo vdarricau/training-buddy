@@ -89,7 +89,7 @@ class ClientControllerTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
 
-        $this->symfonyClient->submitForm('Submit', [
+        $this->symfonyClient->submitForm('Save', [
             'workout_form[title]' => 'A brand new title',
         ]);
 

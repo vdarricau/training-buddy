@@ -25,15 +25,17 @@ class WorkoutRepository extends ServiceEntityRepository
      * @param User $client
      * @return Workout[]
      */
-    public function findPastWorkouts(User $client): array
+    public function findPastOrFinishedWorkouts(User $client): array
     {
         $query = $this->createQueryBuilder('workout')
             ->andWhere('workout.client = :client')
-            ->andWhere('workout.date < :today')
+            ->andWhere('workout.date < :today OR workout.status = :finished')
             ->setParameters([
                 'client' => $client,
                 'today' => Carbon::today(),
+                'finished' => Workout::STATUS_FINISHED,
             ])
+            ->orderBy('workout.date', 'DESC')
             ->getQuery()
         ;
 
@@ -41,8 +43,6 @@ class WorkoutRepository extends ServiceEntityRepository
     }
 
     /**
-     * TODO tests
-     *
      * @param User $client
      * @return Workout[]
      */
@@ -51,10 +51,13 @@ class WorkoutRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('workout')
             ->andWhere('workout.client = :client')
             ->andWhere('workout.date >= :today')
+            ->andWhere('workout.status != :finished')
             ->setParameters([
                 'client' => $client,
                 'today' => Carbon::today(),
+                'finished' => Workout::STATUS_FINISHED,
             ])
+            ->orderBy('workout.date')
             ->getQuery()
         ;
 
