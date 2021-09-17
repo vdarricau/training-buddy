@@ -21,10 +21,8 @@ export default class extends Controller {
             method: 'POST',
             body: formData
         }).then(function (response) {
-            response.json().then((json) => {
+            response.json().then(() => {
                 window.dispatchEvent(new CustomEvent('loadend'));
-
-                console.log(json)
             })
         })
     }

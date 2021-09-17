@@ -53,18 +53,19 @@
         </div>
         <div
                 class="mb-3"
-                {{ stimulus_controller('workout-note', {'workoutId': workout.id})}}
+                data-controller="workout-note"
+                data-workout-note-workout-id-value="{{ workout.id }}"
         >
             <label for="component_form_note" class="form-label required">Notes</label>
             <textarea
                     id="component_form_note"
                     class="form-control"
-                    {{ stimulus_action('workout-note', 'updateNote', 'change') }}
-                    {{ stimulus_target('workout-note', 'workoutNote') }}
+                    data-action="change->workout-note#updateNote"
+                    data-workout-note-target="workoutNote"
             >{{ workout.note }}</textarea>
         </div>
     </div>
-    <div class="mb-4" {{ stimulus_controller('loading-button') }}>
+    <div class="mb-4" data-controller="loading-button">
         {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
             <a
                     href="{{ path('client_workout_edit', {'id': workout.id}) }}"
