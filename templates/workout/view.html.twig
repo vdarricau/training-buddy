@@ -17,7 +17,7 @@
             <ul class="mt-1 component-forms-container">
                 {% for component in workout.components %}
                     <li
-                            class="card card-body mb-2 bg-gradient bg-light"
+                            class="card card-body mb-4 bg-light"
                             data-controller="component-update"
                             data-component-update-component-id-value="{{ component.id }}"
                             data-component-update-component-status-value="{{ component.status }}"
@@ -35,8 +35,9 @@
                         </div>
                         <div>
                             <h3>{{ component.title }}</h3>
-                            <sub>{{ component.setAndRep|nl2br }}</sub>
-                            <div class="mb-3">
+                            <sup>{{ component.setAndRep|nl2br }}</sup>
+
+                            <div>
                                 <label for="component_form_note" class="form-label required">Notes</label>
                                 <textarea
                                         id="component_form_note"

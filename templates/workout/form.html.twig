@@ -1,23 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create/Update workout{% endblock %}
+{% block title %}
+    {% if is_new %}
+        Create Workout
+    {% else %}
+        Update "{{ workout.title }}" Workout
+    {% endif %}
+{% endblock %}
 
 {% block body %}
+    <div class="mb-3">
+        <a href="{{ path('client') }}">
+            &crarr; Back to workouts
+        </a>
+    </div>
+
+    <h1>
+        {% if is_new %}
+            Create Workout
+        {% else %}
+            Update "{{ workout.title }}" Workout
+        {% endif %}
+    </h1>
+
     {% macro collection_item(form) %}
-        <li class="card card-body mb-2" data-form-collection-target="field">
+        <li class="card card-body mb-4" data-form-collection-target="field">
             {{ form_widget(form) }}
             <button
-                    class="btn btn-sm btn-danger"
+                    class="btn btn-sm btn-danger btn-remove"
                     data-action="form-collection#removeItem"
-            > {# TOOD can't remove first one#}
-                Remove
+                    data-form-collection-target="removeButton"
+            >
+                &times;
             </button>
         </li>
     {% endmacro %}
 
     {% import _self as formMacros %}
 
-    <div data-controller="workout-form">
+    <div data-controller="workout-form" class="mt-3">
         {{ form_start(workout_form) }}
         {{ form_row(workout_form.title) }}
         {{ form_row(workout_form.date) }}
@@ -39,21 +60,26 @@
                 {% endfor %}
             </ul>
 
-            <button
-                    class="btn btn-sm btn-primary"
-                    type="button"
-                    data-action="form-collection#addItem workout-form#setOrder"
-                    data-form-collection-target="addButton"
-            >
-                Add new
-            </button>
+            <div class="d-flex justify-content-center">
+                <button
+                        class="btn btn-sm btn-primary"
+                        type="button"
+                        data-action="form-collection#addItem workout-form#setOrder"
+                        data-form-collection-target="addButton"
+                >
+                    Add Exercise
+                </button>
+            </div>
         </div>
 
         <hr>
 
-        {{ form_row(workout_form.submit) }}
-
-        <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Cancel</a>
+        <div class="buttons mb-3">
+            <button type="submit" id="workout_form_submit" name="workout_form[submit]" class="btn btn-lg btn-success me-2">
+                Save
+            </button>
+            <a href="{{ path('client') }}" class="btn btn-lg btn-danger">Cancel</a>
+        </div>
 
         {{ form_end(workout_form) }}
     </div>
