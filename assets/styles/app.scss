@@ -34,7 +34,7 @@ a {
         right: -0.8rem;
         font-size: 1.5rem;
         font-weight: bold;
-        padding: 0 0 0.04rem;
+        padding: 0 0 0.1rem;
         line-height: 0;
         border-radius: 100%;
         width: 1.5rem;
@@ -71,8 +71,47 @@ a {
     }
 
     &.btn-loading {
+        cursor: wait;
+
         .spinner-border {
             display: inline-block;
         }
+    }
+}
+
+input.form-check-input {
+    cursor: pointer;
+}
+
+////////////// Animations
+.grow {
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.5);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    33% {
+        transform: rotate(-20deg) scale(1.2);
+    }
+    66% {
+        transform: rotate(20deg) scale(1.2);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.jiggle {
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        animation: shake 500ms ease-in-out forwards;
+        animation-iteration-count: infinite;
     }
 }
