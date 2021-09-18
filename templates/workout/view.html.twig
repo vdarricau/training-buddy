@@ -86,6 +86,14 @@
             </a>
         {% endif %}
         <a
+                href="{{ path('client_workout_copy', {'id': workout.id}) }}"
+                class="btn btn-lg btn-info"
+                data-loading-button-target="button"
+        >
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Copy
+        </a>
+        <a
                 href="{{ path('client') }}"
                 class="btn btn-lg btn-danger"
                 data-loading-button-target="button"

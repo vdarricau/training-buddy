@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Form;
 
 use App\Entity\Workout;
-use Carbon\Carbon;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -28,9 +27,6 @@ class WorkoutFormType extends AbstractType
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => true,
-                'attr' => [
-                    'min' => Carbon::today()->toDateString(),
-                ]
             ])
             ->add('components', CollectionType::class, [
                 'entry_type' => ComponentFormType::class,
