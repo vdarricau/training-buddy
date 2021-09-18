@@ -53,6 +53,27 @@ class ClientController extends AbstractController
         return $this->handleWorkoutForm($workout, $request, false);
     }
 
+    #[Route('/client/workout/copy/{id}', name: 'client_workout_copy')]
+    public function copyWorkoutAction(Workout $workout): Response
+    {
+        $copiedWorkout = clone $workout;
+        $copiedWorkout->setStatus(Workout::STATUS_PENDING);
+
+        $this->entityManager->persist($copiedWorkout);
+
+        foreach ($workout->getComponents() as $component) {
+            $clonedComponent = clone $component;
+            $copiedWorkout->addComponent($clonedComponent);
+            $this->entityManager->persist($clonedComponent);
+        }
+
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('client_workout_edit', [
+            'id' => $copiedWorkout->getId(),
+        ]);
+    }
+
     #[Route('/client/workout/start/{id}', name: 'client_workout_start')]
     public function startWorkoutAction(Workout $workout): Response
     {

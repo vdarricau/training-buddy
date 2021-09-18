@@ -52,6 +52,14 @@
                                     class="btn btn-sm btn-success d-block mb-2">
                                 View
                             </a>
+                            <a
+                                    href="{{ path('client_workout_copy', {'id': workout.id}) }}"
+                                    class="btn btn-sm btn-info d-block mb-2"
+                                    data-loading-button-target="button"
+                            >
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Copy
+                            </a>
                             {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
                                 <a
                                         href="{{ path('client_workout_edit', {'id': workout.id}) }}"
