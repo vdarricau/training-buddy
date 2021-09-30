@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ExerciseRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
@@ -29,16 +27,6 @@ class Exercise
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Variation::class, mappedBy="exercice", orphanRemoval=true)
-     */
-    private $variations;
-
-    public function __construct()
-    {
-        $this->variations = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -65,36 +53,6 @@ class Exercise
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Variation[]
-     */
-    public function getVariations(): Collection
-    {
-        return $this->variations;
-    }
-
-    public function addVariation(Variation $variation): self
-    {
-        if (!$this->variations->contains($variation)) {
-            $this->variations[] = $variation;
-            $variation->setExercise($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVariation(Variation $variation): self
-    {
-        if ($this->variations->removeElement($variation)) {
-            // set the owning side to null (unless already changed)
-            if ($variation->getExercise() === $this) {
-                $variation->setExercise(null);
-            }
-        }
 
         return $this;
     }

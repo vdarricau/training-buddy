@@ -30,17 +30,17 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $setAndRep;
+    private ?string $setAndRep;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $orderNumber = 0;
+    private int $orderNumber = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workout::class, inversedBy="components")
@@ -51,17 +51,12 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = self::STATUS_PENDING;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Variation::class)
-     */
-    private $variation;
+    private string $status = self::STATUS_PENDING;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $note;
+    private ?string $note;
 
     public function getId(): ?int
     {
@@ -128,18 +123,6 @@ class Component
         }
 
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getVariation(): ?Variation
-    {
-        return $this->variation;
-    }
-
-    public function setVariation(?Variation $variation): self
-    {
-        $this->variation = $variation;
 
         return $this;
     }
