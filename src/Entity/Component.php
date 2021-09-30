@@ -25,7 +25,7 @@ class Component
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -57,6 +57,11 @@ class Component
      * @ORM\Column(type="text", nullable=true)
      */
     private ?string $note;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Exercise::class, inversedBy="components")
+     */
+    private ?Exercise $exercise;
 
     public function getId(): ?int
     {
@@ -143,5 +148,17 @@ class Component
     public function __toString(): string
     {
         return $this->getTitle();
+    }
+
+    public function getExercise(): ?Exercise
+    {
+        return $this->exercise;
+    }
+
+    public function setExercise(?Exercise $exercise): self
+    {
+        $this->exercise = $exercise;
+
+        return $this;
     }
 }

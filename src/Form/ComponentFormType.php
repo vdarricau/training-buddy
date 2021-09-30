@@ -19,13 +19,14 @@ class ComponentFormType extends AbstractType
             ->add('title', TextType::class, [
                 'attr' => [
                     'autocomplete' => 'off',
-                ]
+                ],
             ])
+            ->add('exercise', HiddenType::class)
             ->add('setAndRep')
             ->add('orderNumber', HiddenType::class, [
                 'attr' => [
                     'data-workout-form-target' => 'orderNumber',
-                ]
+                ],
             ])
         ;
     }
