@@ -5008,6 +5008,13 @@ stdout-stream@^1.4.0:
   dependencies:
     readable-stream "^2.0.1"
 
+stimulus-autocomplete@^2.0.1-phylor-6095f2a9:
+  version "2.0.1-phylor-6095f2a9"
+  resolved "https://registry.yarnpkg.com/stimulus-autocomplete/-/stimulus-autocomplete-2.0.1-phylor-6095f2a9.tgz#d716d3005227fed85bf3b0b807179abf3a50680d"
+  integrity sha512-Bp5so9IJFn6LuCxkPHH6R+TiOJeetbmeltKd2ihS67WDk2w9BXkGK15XO0HMbulGpfxz/X2WakYKMtafaaJ8rg==
+  dependencies:
+    lodash.debounce "^4.0.8"
+
 stimulus@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/stimulus/-/stimulus-2.0.0.tgz#713c8b91a72ef90914b90955f0e705f004403047"
