@@ -1554,6 +1554,11 @@ boolbase@^1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootstrap-icons@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-icons/-/bootstrap-icons-1.5.0.tgz#2cb19da148aa9105cb3174de2963564982d3dc55"
+  integrity sha512-44feMc7DE1Ccpsas/1wioN8ewFJNquvi5FewA06wLnqct7CwMdGDVy41ieHaacogzDqLfG8nADIvMNp9e4bfbA==
+
 bootstrap@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.0.tgz#543ef8f44f4b9af67b0230f19508542fec38ef55"
@@ -5002,6 +5007,13 @@ stdout-stream@^1.4.0:
   integrity sha512-j4emi03KXqJWcIeF8eIXkjMFN1Cmb8gUlDYGeBALLPo5qdyTfA9bOtl8m33lRoC+vFMkP3gl0WsDr6+gzxbbTA==
   dependencies:
     readable-stream "^2.0.1"
+
+stimulus-autocomplete@^2.0.1-phylor-6095f2a9:
+  version "2.0.1-phylor-6095f2a9"
+  resolved "https://registry.yarnpkg.com/stimulus-autocomplete/-/stimulus-autocomplete-2.0.1-phylor-6095f2a9.tgz#d716d3005227fed85bf3b0b807179abf3a50680d"
+  integrity sha512-Bp5so9IJFn6LuCxkPHH6R+TiOJeetbmeltKd2ihS67WDk2w9BXkGK15XO0HMbulGpfxz/X2WakYKMtafaaJ8rg==
+  dependencies:
+    lodash.debounce "^4.0.8"
 
 stimulus@^2.0.0:
   version "2.0.0"

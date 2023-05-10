@@ -1,0 +1,80 @@
+{% if workouts|length > 0 %}
+    <div class="accordion mt-3" id="accordion-workouts">
+        {% for workout in workouts %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="{{ workout.id }}">
+                    <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#collapse-{{ workout.id }}"
+                            aria-expanded="false"
+                            aria-controls="collapse-{{ workout.id }}"
+                    >
+                        {{ workout }}
+                        <span class="badge rounder-pill bg-{{ workout.status }} float-end">
+                            {{ workout.status }}
+                        </span>
+                    </button>
+                </h2>
+                <div
+                        id="collapse-{{ workout.id }}"
+                        class="accordion-collapse collapse"
+                        aria-labelledby="heading-{{ workout.id }}"
+                        data-bs-parent="#accordion-workouts"
+                >
+                    <div class="accordion-body d-flex">
+                        <div class="pe-3" style="flex: 1">
+                            {% if workout.description %}
+                                {{ workout.description }}
+                                <hr>
+                            {% endif %}
+                            {% if workout.warmup %}
+                                <div>
+                                    <b>Warmup:</b> {{ workout.warmup }}
+                                </div>
+                                <hr>
+                            {% endif %}
+                            <ol type="A" class="d-inline-block">
+                                {% for component in workout.components %}
+                                    <li>
+                                        {{ component }}
+                                        {% if component.status == constant('App\\Entity\\Component::STATUS_DONE') %}
+                                            <span class="bi bi-check"></span>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </div>
+                        <div class="buttons">
+                            <a
+                                    href="{{ path('client_workout_view', {'id': workout.id}) }}"
+                                    class="btn btn-sm btn-success d-block mb-2">
+                                View
+                            </a>
+                            <a
+                                    href="{{ path('client_workout_copy', {'id': workout.id}) }}"
+                                    class="btn btn-sm btn-info d-block mb-2"
+                                    data-loading-button-target="button"
+                            >
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Copy
+                            </a>
+                            {% if workout.status != constant('App\\Entity\\Workout::STATUS_FINISHED') %}
+                                <a
+                                        href="{{ path('client_workout_edit', {'id': workout.id}) }}"
+                                        class="btn btn-sm btn-primary d-block">
+                                    Edit
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="mt-3">
+        No workouts
+    </div>
+{% endif %}

@@ -2,20 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=ClientRepository::class)
- * @method string getUserIdentifier()
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @ORM\Table(name="user_account")
  */
-class Client implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_CLIENT = 'ROLE_CLIENT';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -52,17 +58,26 @@ class Client implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"date" = "ASC"})
      */
-    private $workouts;
+    private array|ArrayCollection|PersistentCollection $clientWorkouts;
+
+    /**
+     * @var Exercise[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity=Exercise::class, mappedBy="client")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private array|ArrayCollection|PersistentCollection $exercises;
 
     public function __construct()
     {
-        $this->workouts = new ArrayCollection();
+        $this->clientWorkouts = new ArrayCollection();
+        $this->exercises = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,7 +109,7 @@ class Client implements UserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -110,7 +125,7 @@ class Client implements UserInterface
     {
         $roles = $this->roles;
 
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -120,6 +135,11 @@ class Client implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function isClient(): bool
+    {
+        return in_array(self::ROLE_CLIENT, $this->getRoles(), true);
     }
 
     public function getPassword(): ?string
@@ -174,27 +194,72 @@ class Client implements UserInterface
     /**
      * @return Collection|Workout[]
      */
-    public function getWorkouts(): Collection
+    public function getClientWorkouts(): Collection
     {
-        return $this->workouts;
+        return $this->clientWorkouts;
     }
 
-    public function addWorkout(Workout $workout): self
+    public function addClientWorkout(Workout $workout): self
     {
-        if (!$this->workouts->contains($workout)) {
-            $this->workouts[] = $workout;
+        if (!$this->clientWorkouts->contains($workout)) {
+            $this->clientWorkouts[] = $workout;
             $workout->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeWorkout(Workout $workout): self
+    public function removeClientWorkout(Workout $workout): self
     {
-        if ($this->workouts->removeElement($workout)) {
+        if ($this->clientWorkouts->removeElement($workout)) {
             // set the owning side to null (unless already changed)
             if ($workout->getClient() === $this) {
                 $workout->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return sprintf(
+            '%s %s (%s)',
+            $this->getFirstname(),
+            $this->getLastname(),
+            $this->getEmail()
+        );
+    }
+
+    public function __toString(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return Collection|Exercise[]
+     */
+    public function getExercises(): Collection
+    {
+        return $this->exercises;
+    }
+
+    public function addExercise(Exercise $exercise): self
+    {
+        if (!$this->exercises->contains($exercise)) {
+            $this->exercises[] = $exercise;
+            $exercise->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercise(Exercise $exercise): self
+    {
+        if ($this->exercises->removeElement($exercise)) {
+            // set the owning side to null (unless already changed)
+            if ($exercise->getClient() === $this) {
+                $exercise->setClient(null);
             }
         }
 

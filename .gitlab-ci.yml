@@ -8,18 +8,19 @@ cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
         - vendor/
+        - node_modules/
 
 variables:
     POSTGRES_USER: main
     POSTGRES_PASSWORD: main
     POSTGRES_DB: main
-    DATABASE_URL: 'postgresql://main:main@postgres:5432/main'
+    DATABASE_URL: "postgresql://main:main@postgres:5432/main"
     APP_ENV: test
 
 stages:
     - analysis
     - test
-    - deploy
+#   - deploy
 
 ######### Analysis ###########
 static_analysis:
@@ -33,27 +34,29 @@ phpunit:
     stage: test
     script:
         - sh scripts/ci-php-install.sh
+        - npm i
+        - npm run dev
         - sh scripts/php_test_run.sh
 
 ######### Deploy ###########
-.deploy_template: &deploy_configuration  # Hidden yaml configuration that defines an anchor named 'job_configuration'
+.deploy_template:
+    &deploy_configuration # Hidden yaml configuration that defines an anchor named 'job_configuration'
     stage: deploy
     when: manual
     before_script:
         - apt-get update -qy
         - apt-get install -y ruby-dev git
         - gem install dpl
+# staging:
+#     <<: *deploy_configuration
+#     script:
+#         - dpl --provider=heroku --app=mytrainingbuddy-staging --api_key=$HEROKU_API_KEY
+#     only:
+#         - /^release\/.+$/
 
-staging:
-    <<: *deploy_configuration
-    script:
-        - dpl --provider=heroku --app=mytrainingbuddy-staging --api_key=$HEROKU_API_KEY
-    only:
-        - /^release\/.+$/
-
-production:
-    <<: *deploy_configuration
-    script:
-        - dpl --provider=heroku --app=mytrainingbuddy --api_key=$HEROKU_API_KEY
-    only:
-        - tags
+# production:
+#     <<: *deploy_configuration
+#     script:
+#         - dpl --provider=heroku --app=mytrainingbuddy --api_key=$HEROKU_API_KEY
+#     only:
+#         - tags
