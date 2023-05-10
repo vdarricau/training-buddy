@@ -31,13 +31,19 @@ class Exercise
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Variation::class, mappedBy="exercice", orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="exercises")
      */
-    private $variations;
+    private $client;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Component::class, mappedBy="exercise")
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $components;
 
     public function __construct()
     {
-        $this->variations = new ArrayCollection();
+        $this->components = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,39 +75,51 @@ class Exercise
         return $this;
     }
 
-    /**
-     * @return Collection|Variation[]
-     */
-    public function getVariations(): Collection
-    {
-        return $this->variations;
-    }
-
-    public function addVariation(Variation $variation): self
-    {
-        if (!$this->variations->contains($variation)) {
-            $this->variations[] = $variation;
-            $variation->setExercise($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVariation(Variation $variation): self
-    {
-        if ($this->variations->removeElement($variation)) {
-            // set the owning side to null (unless already changed)
-            if ($variation->getExercise() === $this) {
-                $variation->setExercise(null);
-            }
-        }
-
-        return $this;
-    }
-
     #[Pure]
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getClient(): ?User
+    {
+        return $this->client;
+    }
+
+    public function setClient(?User $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Component[]
+     */
+    public function getComponents(): Collection
+    {
+        return $this->components;
+    }
+
+    public function addComponent(Component $component): self
+    {
+        if (!$this->components->contains($component)) {
+            $this->components[] = $component;
+            $component->setExercise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComponent(Component $component): self
+    {
+        if ($this->components->removeElement($component)) {
+            // set the owning side to null (unless already changed)
+            if ($component->getExercise() === $this) {
+                $component->setExercise(null);
+            }
+        }
+
+        return $this;
     }
 }

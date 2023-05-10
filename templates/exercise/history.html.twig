@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}History of {{ exercise.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ exercise.name }}</h1>
+    {% for component in exercise.components %}
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">
+                    {{ component.workout.date.format('Y-m-d') }}
+                </h3>
+                <p class="card-text">
+                    {{ component.setAndRep|nl2br }}
+                    {{ component.note|nl2br }}
+                </p>
+                <a href="{{ path('client_workout_view', {'id': component.workout.id}) }}" class="btn btn-primary">
+                    See workout
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+

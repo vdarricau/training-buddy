@@ -25,22 +25,22 @@ class Component
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $setAndRep;
+    private ?string $setAndRep;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $orderNumber = 0;
+    private int $orderNumber = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity=Workout::class, inversedBy="components")
@@ -51,17 +51,17 @@ class Component
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $status = self::STATUS_PENDING;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Variation::class)
-     */
-    private $variation;
+    private string $status = self::STATUS_PENDING;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $note;
+    private ?string $note;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Exercise::class, inversedBy="components")
+     */
+    private ?Exercise $exercise;
 
     public function getId(): ?int
     {
@@ -132,18 +132,6 @@ class Component
         return $this;
     }
 
-    public function getVariation(): ?Variation
-    {
-        return $this->variation;
-    }
-
-    public function setVariation(?Variation $variation): self
-    {
-        $this->variation = $variation;
-
-        return $this;
-    }
-
     public function getNote(): ?string
     {
         return $this->note;
@@ -160,5 +148,17 @@ class Component
     public function __toString(): string
     {
         return $this->getTitle();
+    }
+
+    public function getExercise(): ?Exercise
+    {
+        return $this->exercise;
+    }
+
+    public function setExercise(?Exercise $exercise): self
+    {
+        $this->exercise = $exercise;
+
+        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Component;
+use App\Entity\Exercise;
 use App\Entity\User;
 use App\Entity\Workout;
 use App\Form\WorkoutFormType;
@@ -144,6 +145,14 @@ class ClientController extends AbstractController
             foreach ($workout->getComponents() as $component) {
                 $component->setWorkout($workout);
                 $this->entityManager->persist($component);
+
+                if (null === $component->getExercise()) {
+                    $exercise = new Exercise();
+                    $exercise->setName($component->getTitle());
+                    $exercise->setClient($client);
+                    $component->setExercise($exercise);
+                    $this->entityManager->persist($exercise);
+                }
             }
             $this->entityManager->flush();
 

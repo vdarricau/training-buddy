@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client exercises{% endblock %}
+
+{% block body %}
+    <h1>Exercises</h1>
+
+    {% for exercise in exercises %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3 class="card-title">
+                    {{ exercise.name }}
+                </h3>
+                <p class="card-text">
+                    {{ exercise.description|nl2br }}
+                </p>
+                <a href="{{ path('client_exercise_history', {'id': exercise.id}) }}" class="btn btn-primary">
+                    See history
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

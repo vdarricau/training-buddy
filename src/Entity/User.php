@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -57,17 +58,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     /**
      * @ORM\OneToMany(targetEntity=Workout::class, mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"date" = "ASC"})
      */
-    private $clientWorkouts;
+    private array|ArrayCollection|PersistentCollection $clientWorkouts;
+
+    /**
+     * @var Exercise[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity=Exercise::class, mappedBy="client")
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private array|ArrayCollection|PersistentCollection $exercises;
 
     public function __construct()
     {
         $this->clientWorkouts = new ArrayCollection();
+        $this->exercises = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,5 +234,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return Collection|Exercise[]
+     */
+    public function getExercises(): Collection
+    {
+        return $this->exercises;
+    }
+
+    public function addExercise(Exercise $exercise): self
+    {
+        if (!$this->exercises->contains($exercise)) {
+            $this->exercises[] = $exercise;
+            $exercise->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercise(Exercise $exercise): self
+    {
+        if ($this->exercises->removeElement($exercise)) {
+            // set the owning side to null (unless already changed)
+            if ($exercise->getClient() === $this) {
+                $exercise->setClient(null);
+            }
+        }
+
+        return $this;
     }
 }
